@@ -3,10 +3,12 @@ import { PORT } from "./config/server.config.js";
 import authRouter from "./routes/auth.router.js";
 import courseRouter from "./routes/course.router.js";
 import { PrismaClient } from "@prisma/client";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const prisma = new PrismaClient();
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/v1/user",authRouter);
 app.use("/api/v1/course",courseRouter);
 async function getConnection() {

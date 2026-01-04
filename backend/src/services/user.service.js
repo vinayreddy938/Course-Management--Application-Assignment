@@ -1,6 +1,7 @@
-import { userCreate } from "../repository/user.repository.js"
+import { logInRepository, userCreate } from "../repository/user.repository.js"
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
+import CustomError from "../../utils/customError.js";
 config();
 export const userRegisterService = async (req)=>{
     try{
@@ -16,7 +17,24 @@ export const userRegisterService = async (req)=>{
     }
    
 }
-export const  userLogInService = async (req,res)=>{
+export const  userLogInService = async (req)=>{
+    try{
+        const {email,password} = req.body;
+        const user = await logInRepository({email,password});
+        if(!user){
+            throw new CustomError("Invalid Credentials",400);
+        }
+        const isValidPassword = await bcrypt.compare(password,user.password);
+        if(!isValidPassword){
+            throw new CustomError("Invalid Credentials",400);
+
+        }
+        return user;
+
+    }catch(err){
+        throw err;
+
+    }
 
 }
 export const  userLogOUtService = async(req,res)=>{
