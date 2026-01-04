@@ -37,6 +37,4 @@ export const  userLogInService = async (req)=>{
     }
 
 }
-export const  userLogOUtService = async(req,res)=>{
 
-}
